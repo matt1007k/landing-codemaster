@@ -1,0 +1,30 @@
+---
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+	title: string;
+	description?: string
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description ?? 'Astro description'} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/logos/iso_logo.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Codemaster</title>
+	</head>
+	<body class="font-poppins">
+		<Navbar />
+		<main class="h-[100svh]">
+			<slot />
+		</main>
+	</body>
+</html>
+<style is:global>
+</style>
