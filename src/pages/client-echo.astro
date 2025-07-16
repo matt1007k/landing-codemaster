@@ -1,0 +1,140 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Echo" description="Client Echo Astro">
+  <!-- <Counter client:load title="Title props" /> -->
+
+  <section class="grid w-full h-screen place-items-center">
+    <h1>Client Echo</h1>
+    <div
+      id="status"
+      class="text-white px-12 py-6 rounded-full font-semibold flex items-center gap-4"
+    >
+      <span id="status-text">Online</span>
+      <i data-lucide="mouse-pointer-click" class="text-white"></i>
+    </div>
+  </section>
+</Layout>
+
+<script type="module" lang="ts">
+  // Assuming this code runs in a browser environment
+
+  const statusElement = document.getElementById("status");
+  const statusTextElement = document.getElementById("status-text");
+
+  statusElement.classList.add("bg-red-500");
+  statusTextElement.textContent = "Offline";
+
+  const roomId = "general"; // Replace with the actual room ID
+  let wsocket = null; // Use `let` so we can reassign, and initialize as null
+  let reconnectInterval = null; // To store the interval for reconnect attempts
+  const RECONNECT_DELAY = 3000; // 3 seconds before attempting to reconnect
+
+  function connectWebSocket() {
+    // Clear any existing reconnect interval if this is a fresh connection attempt
+    if (reconnectInterval) {
+      clearInterval(reconnectInterval);
+      reconnectInterval = null;
+    }
+
+    wsocket = new WebSocket(`ws://localhost:8080/ws/${roomId}`);
+
+    wsocket.addEventListener("open", () => {
+      console.log(`WebSocket connection to room ${roomId} opened!`);
+      statusElement.classList.remove("bg-red-500");
+      statusElement.classList.add("bg-green-500");
+      statusTextElement.textContent = "Online";
+      // Clear the reconnect interval once successfully connected
+      if (reconnectInterval) {
+        clearInterval(reconnectInterval);
+        reconnectInterval = null;
+      }
+      // You can send an initial message or perform actions here
+      wsocket?.send(
+        JSON.stringify({
+          type: "join",
+          user: "client",
+          message: "Hello from client!",
+        })
+      );
+    });
+
+    wsocket.addEventListener("message", (event) => {
+      console.log("Message from server:", event.data);
+      // Handle incoming messages (e.g., display in UI)
+    });
+
+    wsocket.addEventListener("close", (event) => {
+      console.log(
+        `WebSocket connection to room ${roomId} closed:`,
+        event.code,
+        event.reason
+      );
+      statusElement.classList.add("bg-red-500");
+      statusElement.classList.remove("bg-green-500");
+      statusTextElement.textContent = "Offline";
+      // Attempt to reconnect if the close was not intentional (e.g., server restart)
+      // You might want to add conditions here for clean closes (e.g., specific codes)
+      if (!event.wasClean) {
+        console.log(
+          "Attempting to reconnect in",
+          RECONNECT_DELAY / 1000,
+          "seconds..."
+        );
+        reconnectInterval = setInterval(() => {
+          // Only attempt to reconnect if the current socket is not open
+          if (wsocket === null || wsocket.readyState === WebSocket.CLOSED) {
+            console.log("Reconnecting...");
+            connectWebSocket(); // Try to establish a new connection
+          }
+        }, RECONNECT_DELAY);
+      }
+    });
+
+    wsocket.addEventListener("error", (error) => {
+      statusElement.classList.add("bg-red-500");
+      statusElement.classList.remove("bg-green-500");
+      statusTextElement.textContent = "Offline";
+      console.error("WebSocket error:", error);
+    });
+  }
+
+  // Initial connection attempt
+  connectWebSocket();
+
+  // Example of how you might send a message from the client
+  function sendMessage(message) {
+    if (wsocket && wsocket.readyState === WebSocket.OPEN) {
+      wsocket.send(message);
+    } else {
+      console.warn("WebSocket not open. Message not sent:", message);
+    }
+  }
+
+  // Simulate sending a message after a delay
+  setTimeout(() => {
+    sendMessage(
+      JSON.stringify({
+        type: "chat",
+        user: "Browser User",
+        text: "Hello from the client!",
+      })
+    );
+  }, 5000);
+
+  // You might also want to expose a way to manually close the connection
+  function disconnectWebSocket() {
+    if (wsocket) {
+      wsocket.close(1000, "Client intentionally disconnected"); // 1000 is for normal closure
+      if (reconnectInterval) {
+        clearInterval(reconnectInterval);
+        reconnectInterval = null;
+      }
+      wsocket = null;
+    }
+  }
+
+  // Example of manual disconnection (e.g., from a button click)
+  // document.getElementById('disconnectButton').addEventListener('click', disconnectWebSocket);
+</script>

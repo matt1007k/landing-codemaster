@@ -1,63 +1,159 @@
 ---
-import SectionThree from '../components/landing/SectionThree.astro';
-import Layout from '../layouts/Layout.astro';
+import Counter from "../components/Counter.vue";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Inicio" description="Codemaster construye soluciones digitales para tu empresa">
-	<section class="bg-gray-100 min-h-fit pt-5 md:pt-10 px-5 sm:px-0 pb-10 md:pb-16">
-		<div class="container mx-auto relative">
-			<div class="z-50">
-				<h1 class="text-blue-800 font-bold text-xl md:text-4xl lg:text-7xl text-center mb-1 md:mb-5">Lleva tu empresa <span class="text-orange-500">a otro nivel!</span></h1>
-				<h2 class="text-orange-500 font-bold text-2xl md:text-5xl lg:text-7xl text-center">Empieza a <span class="text-blue-800">digitalizar tu negocio</span></h2>
-				<p class="mt-3 text-md md:text-2xl text-gray-500 text-center">Ofrecemos soluciones para todo tipo de negocios y empresas, con tecnología  e innovación.</p>
+<Layout
+  title="Inicio"
+  description="Codemaster construye soluciones digitales para tu empresa"
+>
+  <!-- <Counter client:load title="Title props" /> -->
 
-				<a href="/contact" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-6 px-7 mt-10 flex items-center gap-2 w-max rounded-full mx-auto">
-					<span>Ver más</span>
-					<img src="/icons/hand-click.svg" alt="Icon hand click"/>
-				</a>
-			</div>
-
-			<div class="grid grid-cols-3 mt-[0px] lg:mt-[-30px] z-10">
-				<img class="h-[clamp(56px,10vw,195px] w-[clamp(119px,10vw,452px] ml-2 lg:ml-10" src="/images/hero-1.png" alt="Hero 1" />
-				<img class="pt-0 lg:pt-9 h-[clamp(51px,10vw,231px] w-[clamp(96px,10vw,366.98px] justify-self-end self-end -mr-10 lg:-mr-12" src="/images/hero-2.png" alt="Hero 2" />
-				<img class="justify-self-end pr-0 lg:pr-12 h-[clamp(90px,10vw,321px] w-[51px] sm:w-[100px] lg:w-[195.92px]" src="/images/hero-3.png" alt="Hero 3" />
-				<img class="self-end h-[clamp(99px,10vw,353px] w-[62px] sm:w-[100px] lg:w-[233px]" src="/images/hero-4.png" alt="Hero 4" />
-				<img class="self-end pr-5 lg:pr-0 w-[clamp(86px,10vw,307px] w-[154px] sm:w-[200px] lg:w-[585.77px]" src="/images/hero-5.png" alt="Hero 5" />
-				<img class="self-end justify-self-end h-[clamp(72px,10vw,250px]  w-[118px]  sm:w-[180px] lg:w-[450.51px]" src="/images/hero-6.png" alt="Hero 6" />
-			</div>
-		</div>
-	</section>
-	<section class="bg-gray-100 min-h-fit pt-5 md:pt-10 px-5 sm:px-0 pb-10 md:pb-16">
-		<div class="container mx-auto">
-			<h2 class="text-blue-800 font-bold text-2xl md:text-5xl lg:text-7xl text-center mb-5">Control, Innovación & tecnología.</h2>
-
-			<div class="grid grid-cols-1 lg:grid-cols-[1fr_0.6fr_1fr] gap-6 my-10 items-center">
-				<div class="grid gap-4 md:gap-7">
-					<h3 class="text-xl md:text-5xl font-bold text-orange-500 text-center">Potencia <span class="text-blue-800">tu empresa</span></h3>
-					<p class="text-md md:text-2xl text-gray-500 text-center font-light">Ofrecemos solución para todo tipo de negocios, con <span class="text-blue-800 font-medium">tecnología  e innovación.</span></p>
-					<p class="text-md md:text-2xl text-gray-500 text-center font-light">Nuestra oferta incluye soluciones tecnológicas avanzadas para todo tipo de negocios, aplicando innovación y creatividad para resolver tus desafíos empresariales y fomentar un crecimiento sostenible. Te complementamos con servicios tecnológicos a la medida de tus necesidades, asegurando eficiencia y éxito.</p>
-				</div>
-
-				<div class="grid justify-center w-full">
-					<img 
-						src="./images/section-2-mobile.svg" 
-						alt="Section image mobile"
-						class="w-full"
-						/>
-				</div>
-
-				<div class="grid gap-4 md:gap-7">
-					<h3 class="text-xl md:text-5xl font-bold text-orange-500 text-center">Fácil <span class="text-blue-800">adaptación</span></h3>
-					<p class="text-md md:text-2xl text-gray-500 text-center font-light">Ofrecemos soluciones adaptables a la medida de tu <span class="text-blue-800 font-medium">negocio o empresa</span></p>
-					<p class="text-md md:text-2xl text-gray-500 text-center font-light">Ofrecemos soluciones innovadoras para todo tipo de negocios, adaptadas a tus necesidades específicas. Te complementamos con servicios tecnológicos a medida, asegurando eficiencia y crecimiento sostenido. Confía en nuestra tecnología de vanguardia para transformar tu negocio y alcanzar nuevos niveles de éxito.</p>
-				</div>
-
-			</div>
-		</div>
-	</section>
-	<SectionThree />
+  <section class="grid w-full h-screen place-items-center">
+    <div
+      id="chat"
+      class="w-[450px] min-h-[500px] h-auto bg-gray-100 flex flex-col items-center justify-center"
+    >
+      <div
+        id="alert"
+        class="bg-red-100 hidden text-red-500 transition-all ease-out duration-200 text-center w-full p-2 rounded"
+      >
+      </div>
+      <div class="w-[450px] bg-white border rounded p-3">
+        <input
+          type="text"
+          id="user-input"
+          class="w-full border border-gray-300 p-2"
+          placeholder="Type your user..."
+        />
+        <input
+          type="text"
+          id="avatar-input"
+          class="w-full border border-gray-300 p-2"
+          placeholder="Type your avatar..."
+        />
+      </div>
+      <h1 class="text-2xl font-bold py-4 border bg-white w-full text-center">
+        Chat: general
+      </h1>
+      <div id="message-list" class="w-full overflow-auto grid gap-1"></div>
+      <div class="flex items-center w-full mt-auto">
+        <input
+          type="text"
+          id="message-input"
+          class="w-full border border-gray-300 p-2"
+          placeholder="Type your message..."
+        />
+        <button
+          id="send-button"
+          class="bg-blue-500 text-white px-4 py-2 rounded">Send</button
+        >
+      </div>
+    </div>
+  </section>
 </Layout>
 
-<style>
-	
-</style>
+<script type="module">
+  // import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+  // const socket = io("ws://localhost:8080");
+
+  // socket.on("connect", () => {
+  //   console.log("Connected to server");
+  // });
+
+  // socket.on("connect_error", (error) => {
+  //   if (socket.active) {
+  //   } else {
+  //     console.log(error.message);
+  //   }
+  // });
+
+  // socket.on("message", (data) => {
+  //   console.log("Received message:", data);
+  // });
+
+  // socket.on("disconnect", (reason, details) => {
+  //   console.log("Disconnected from server:", reason, details);
+  // });
+
+  const userInput = document.getElementById("user-input");
+  const alertMessage = document.getElementById("alert");
+  const avatarInput = document.getElementById("avatar-input");
+
+  const chat = document.querySelector("#chat > h1");
+  const messageList = document.getElementById("message-list");
+  const messageInput = document.getElementById("message-input");
+  const sendButton = document.getElementById("send-button");
+
+  console.log(chat.textContent.trim().split(":").at(1).trim());
+
+  const wsocket = new WebSocket(
+    `ws://localhost:8080/ws/${chat.textContent.trim().split(":").at(1).trim()}`
+  );
+
+  wsocket.addEventListener("open", (event) => {
+    console.log("Connection established");
+    // wsocket.send("Hello, server!");
+  });
+
+  const showAlertMessage = (message) => {
+    alertMessage.textContent = message;
+    alertMessage.classList.remove("hidden");
+    setTimeout(() => {
+      alertMessage.classList.add("hidden");
+    }, 2000);
+  };
+
+  sendButton.addEventListener("click", () => {
+    console.log(userInput.value, avatarInput.value, messageInput.value);
+
+    if (userInput.value.length === 0) {
+      showAlertMessage("Please enter a user");
+      console.log("Please enter a user");
+
+      return;
+    }
+    if (messageInput.value.length === 0) {
+      showAlertMessage("Please enter a message");
+      return;
+    }
+
+    wsocket.send(
+      JSON.stringify({
+        message: messageInput.value,
+        user: userInput.value,
+        avatar:
+          avatarInput.value ||
+          "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+        date: new Date().toLocaleString(),
+      })
+    );
+    messageInput.value = "";
+  });
+
+  wsocket.addEventListener("message", (event) => {
+    const messageParse = JSON.parse(event.data);
+    console.log("Message from server: ", messageParse);
+    const isMe = userInput.value === messageParse.user;
+    const messageCard = document.createElement("div");
+    const messageTemplate = `
+    <div class="w-[max-content] ${isMe ? "justify-self-end" : "justify-self-start"}">
+      <div class="flex items-center p-2 rounded ${isMe ? "bg-blue-500 text-white" : "bg-blue-100 text-black"}">
+        <img
+          class="w-10 h-10 rounded-full mr-2"
+          src="${messageParse.avatar}"
+          alt="${messageParse.user}"
+        />
+        <div class="flex flex-col">
+          <span class="font-bold">${messageParse.user}</span>
+          <span>${messageParse.message}</span>
+        </div>
+      </div>
+      <span class="text-gray-500 text-sm text-${isMe ? "right" : "left"}">${messageParse.date}</span>
+    </div>
+  `;
+    messageCard.innerHTML = messageTemplate;
+
+    messageList.appendChild(messageCard);
+  });
+</script>

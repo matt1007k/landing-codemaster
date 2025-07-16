@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express-ws": "^3.0.5",
+    "@types/node": "^24.0.10",
+    "@types/ws": "^8.18.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-ws": "^5.0.2",
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.3"
+  },
+  "scripts": {
+    "dev:ws": "nodemon ./server-ws.ts",
+    "dev": "nodemon ./index.ts"
+  }
+}
